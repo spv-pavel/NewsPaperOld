@@ -21,14 +21,19 @@ class Category(models.Model):
 class Post(models.Model):
     # связь один ко многим с Author
     connection_author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    # поле с выбором типа, статья или новость
     type = models.CharField(max_length=255, choices=TYPE_POST)
-    data_create = models.DateField(auto_now_add=True)  # автоматически добавляемая дата и время создания
+    data_create = models.DateField(auto_now_add=True)
     # связь «многие ко многим» с моделью Category (с дополнительной моделью PostCategory)
     connection_category = models.ManyToManyField(Category)
     title = models.CharField(max_length=255)
     text = models.TextField()
-    # рейтинг статьи/новости
+    rating = models.IntegerField(default=0)  # рейтинг статьи/новости
+
+    def like(self):
+        pass
+
+    def dislike(self):
+        pass
 
 
 class PostCategory(models.Model):
