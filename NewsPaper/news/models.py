@@ -30,10 +30,10 @@ class Post(models.Model):
     rating = models.IntegerField(default=0)  # рейтинг статьи/новости
 
     def like(self):
-        pass
+        self.rating += 1
 
     def dislike(self):
-        pass
+        self.rating -= 1
 
 
 class PostCategory(models.Model):
@@ -50,4 +50,10 @@ class Comment(models.Model):
     connection_user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
     date_create = models.DateField(auto_now_add=True)
-    # рейтинг комментария
+    rating = models.IntegerField(default=0)  # рейтинг комментария
+
+    def like(self):
+        self.rating += 1
+
+    def dislike(self):
+        self.rating -= 1
