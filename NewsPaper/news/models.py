@@ -35,6 +35,11 @@ class Post(models.Model):
     def dislike(self):
         self.rating -= 1
 
+    def preview(self):
+        # который возвращает начало статьи (предварительный просмотр) длиной 124 символа и добавляет многоточие в конце.
+        preview_text = self.text[:124] + '...'
+        return preview_text
+
 
 class PostCategory(models.Model):
     # связь «один ко многим» с моделью Post
