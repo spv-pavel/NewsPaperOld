@@ -36,13 +36,13 @@ class PostCategory(models.Model):
     connection_post = models.OneToOneField(Post, on_delete=models.CASCADE)
     # связь «один ко многим» с моделью Category
     connection_category = models.ForeignKey(Category, on_delete=models.CASCADE)
-#
-#
-# class Comment(models.Model):
-#     # связь «один ко многим» с моделью Post
-#     connection_post = models.ForeignKey(Post, on_delete=models.CASCADE)
-#     # связь «один ко многим» со встр моделью User (комментарии может оставить любой пользователь, необязательно автор)
-#     connection_user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     text = models.CharField(max_length=255)
-#     date_create = models.DateField(auto_now_add=True)
-#     # рейтинг комментария
+
+
+class Comment(models.Model):
+    # связь «один ко многим» с моделью Post
+    connection_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    # связь «один ко многим» со встр моделью User (комментарии может оставить любой пользователь, необязательно автор)
+    connection_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+    date_create = models.DateField(auto_now_add=True)
+    # рейтинг комментария
