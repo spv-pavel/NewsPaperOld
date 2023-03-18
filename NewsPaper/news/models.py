@@ -14,8 +14,8 @@ class Author(models.Model):
     # рейтинг пользователя. Ниже будет дано описание того, как этот рейтинг можно посчитать
 
 
-# class Category(models.Model):
-#     name = models.CharField(max_length=25, unique=True)
+class Category(models.Model):
+    name = models.CharField(max_length=25, unique=True)
 
 
 # class Post(models.Model):
