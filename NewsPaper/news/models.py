@@ -11,7 +11,13 @@ TYPE_POST = [
 class Author(models.Model):
     # cвязь «один к одному» с встроенной моделью пользователей User
     connection_user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # рейтинг пользователя. Ниже будет дано описание того, как этот рейтинг можно посчитать
+    rating = models.IntegerField(default=0)  # рейтинг пользователя
+
+    def update_rating(self):
+        # суммарный рейтинг каждой статьи автора умножается на 3
+        # суммарный рейтинг всех комментариев автора;
+        # суммарный рейтинг всех комментариев к статьям автора
+        pass
 
 
 class Category(models.Model):
