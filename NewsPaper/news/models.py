@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Sum
+
+# from django.db.models import Sum
 
 TYPE_POST = [
     ('article', 'статья'),
@@ -10,23 +11,22 @@ TYPE_POST = [
 
 class Author(models.Model):
     # cвязь «один к одному» с встроенной моделью пользователей User
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE) # type: User
     author_rating = models.IntegerField(default=0)  # рейтинг пользователя
 
     def update_rating(self):
         # суммарный рейтинг каждой статьи автора умножается на 3
         # суммарный рейтинг всех комментариев автора;
         # суммарный рейтинг всех комментариев к статьям автора
-        """ author_pst_rating = self.post_set.all().aggregate(post_rating=Sum('post_rating'))['post_rating'] * 3
-        author_pst_rating2 = Post.objects.filter(user_author=self).aggregate(Sum('rating_news')).get('rating_news__sum') * 3
-        author_pst_rating3 = Post.objects.filter
-        author_rating_of_comm = ...
-        author_rating_to_comm = ...
-        self.author_rate = author_pst_rating + author_rating_of_comm + author_rating_to_comm
+        # author_pst_rating = self.post_set.all().aggregate(post_rating=Sum('post_rating'))['post_rating'] * 3
+        # author_pst_rating2 = Post.objects.filter(user_author=self).aggregate(Sum('rating_news')).get('rating_news__sum') * 3
+        # author_rating_of_comm = ...
+        # author_rating_to_comm = ...
+        # self.author_rate = author_pst_rating + author_rating_of_comm + author_rating_to_comm
         self.save()
         return self.author_rate
- """
-
+    
+    
 class Category(models.Model):
     name = models.CharField(max_length=25, unique=True)
 
