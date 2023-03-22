@@ -1,24 +1,31 @@
-from django.db import models
 from django.contrib.auth.models import User
-
+from django.db import models
+from django.db.models import Sum
 
 TYPE_POST = [
-    ('s', 'статья'),
-    ('n', 'новость'),
+    ('article', 'статья'),
+    ('news', 'новость'),
 ]
 
 
 class Author(models.Model):
     # cвязь «один к одному» с встроенной моделью пользователей User
-    connection_user = models.OneToOneField(User, on_delete=models.CASCADE)
-    rating = models.IntegerField(default=0)  # рейтинг пользователя
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    author_rating = models.IntegerField(default=0)  # рейтинг пользователя
 
     def update_rating(self):
         # суммарный рейтинг каждой статьи автора умножается на 3
         # суммарный рейтинг всех комментариев автора;
         # суммарный рейтинг всех комментариев к статьям автора
-        pass
-
+        """ author_pst_rating = self.post_set.all().aggregate(post_rating=Sum('post_rating'))['post_rating'] * 3
+        author_pst_rating2 = Post.objects.filter(user_author=self).aggregate(Sum('rating_news')).get('rating_news__sum') * 3
+        author_pst_rating3 = Post.objects.filter
+        author_rating_of_comm = ...
+        author_rating_to_comm = ...
+        self.author_rate = author_pst_rating + author_rating_of_comm + author_rating_to_comm
+        self.save()
+        return self.author_rate
+ """
 
 class Category(models.Model):
     name = models.CharField(max_length=25, unique=True)
@@ -26,14 +33,14 @@ class Category(models.Model):
 
 class Post(models.Model):
     # связь один ко многим с Author
-    connection_author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, choices=TYPE_POST)
     data_create = models.DateField(auto_now_add=True)
     # связь «многие ко многим» с моделью Category (с дополнительной моделью PostCategory)
-    connection_category = models.ManyToManyField(Category)
+    category = models.ManyToManyField(Category)
     title = models.CharField(max_length=255)
     text = models.TextField()
-    rating = models.IntegerField(default=0)  # рейтинг статьи/новости
+    post_rating = models.IntegerField(default=0)  # рейтинг статьи/новости
 
     def like(self):
         self.rating += 1
@@ -49,19 +56,19 @@ class Post(models.Model):
 
 class PostCategory(models.Model):
     # связь «один ко многим» с моделью Post
-    connection_post = models.OneToOneField(Post, on_delete=models.CASCADE)
+    post = models.OneToOneField(Post, on_delete=models.CASCADE)
     # связь «один ко многим» с моделью Category
-    connection_category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
 class Comment(models.Model):
     # связь «один ко многим» с моделью Post
-    connection_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     # связь «один ко многим» со встр моделью User (комментарии может оставить любой пользователь, необязательно автор)
-    connection_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
     date_create = models.DateField(auto_now_add=True)
-    rating = models.IntegerField(default=0)  # рейтинг комментария
+    comment_rating = models.IntegerField(default=0)  # рейтинг комментария
 
     def like(self):
         self.rating += 1
