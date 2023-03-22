@@ -1,4 +1,4 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 
 # from django.views.generic.list import ListView
 # from NewsPaper.news.models import Author, Category
