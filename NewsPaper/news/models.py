@@ -80,7 +80,7 @@ class Post(models.Model):
 
 class PostCategory(models.Model):
     # связь «один ко многим» с моделью Post
-    post = models.OneToOneField(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     # связь «один ко многим» с моделью Category
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
