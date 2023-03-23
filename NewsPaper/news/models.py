@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-
-# from django.db.models import Sum
+from django.db.models import Sum
 
 TYPE_POST = [
     ('article', 'статья'),
@@ -19,10 +18,11 @@ class Author(models.Model):
         # суммарный рейтинг всех комментариев автора;
         # суммарный рейтинг всех комментариев к статьям автора
         # author_pst_rating = self.post_set.all().aggregate(post_rating=Sum('post_rating'))['post_rating'] * 3
-        # author_pst_rating2 = Post.objects.filter(user_author=self).aggregate(Sum('rating_news')).get('rating_news__sum') * 3
-        # author_rating_of_comm = ...
-        # author_rating_to_comm = ...
-        # self.author_rate = author_pst_rating + author_rating_of_comm + author_rating_to_comm
+        # author_pst_rating = Post.objects.filter(user_author=self).aggregate(Sum('rating_news')).get('rating_news__sum') * 3
+        author_pst_rating = Post.objects.filter(Author=self).aaggregate(Sum('post_rating')) * 3
+        author_rating_of_comm = Comment.objects.filter(Author=self).aaggregate(Sum('text'))
+        author_rating_to_comm = Comment.objects.filter(Post=self).aaggregate(Sum('text'))
+        self.author_rate = author_pst_rating + author_rating_of_comm + author_rating_to_comm
         self.save()
         return self.author_rate
 
@@ -43,10 +43,10 @@ class Post(models.Model):
     post_rating = models.IntegerField(default=0)  # рейтинг статьи/новости
 
     def like(self):
-        self.rating += 1
+        self.post_rating += 1
 
     def dislike(self):
-        self.rating -= 1
+        self.post_rating -= 1
 
     def preview(self):
         # который возвращает начало статьи (предварительный просмотр) длиной
@@ -73,7 +73,7 @@ class Comment(models.Model):
     comment_rating = models.IntegerField(default=0)  # рейтинг комментария
 
     def like(self):
-        self.rating += 1
+        self.comment_rating += 1
 
     def dislike(self):
-        self.rating -= 1
+        self.comment_rating -= 1
