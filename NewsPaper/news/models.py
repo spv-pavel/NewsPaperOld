@@ -22,7 +22,6 @@ class Author(models.Model):
         rating_comments_posts = Comment.objects.filter(post__author__user=self.user).aggregate(comment_rating=Sum('comment_rating'))['comment_rating']  # noqa: E501
 
         self.author_rating = rating_posts_author * 3 + rating_comments_author + rating_comments_posts  # noqa: E501
-        # self.author_rating = 10
         self.save()
         return self.author_rating
 
