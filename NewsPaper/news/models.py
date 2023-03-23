@@ -17,12 +17,10 @@ class Author(models.Model):
         # суммарный рейтинг каждой статьи автора умножается на 3
         # суммарный рейтинг всех комментариев автора;
         # суммарный рейтинг всех комментариев к статьям автора
-        # rating_posts_author = Post.objects.filter(author_id=self.pk).aaggregate(rating=Sum('post_rating'))['post_rating'] * 3  # noqa: E501
-        # rating_comments_author = Comment.objects.filter(user_id=self.user).aaggregate(comment_rating=Sum('comment_rating'))['comment_rating']  # noqa: E501
-        # rating_comments_posts = Comment.objects.filter(post__author__user=self.user).aaggregate(comment_rating=Sum('comment_rating'))['comment_rating']  # noqa: E501
-        rating_posts_author = Post.objects.filter(author_id=self.pk).aaggregate(Sum('post_rating'))['post_rating'] * 3  # noqa: E501
-        rating_comments_author = Comment.objects.filter(user_id=self.user).aaggregate(Sum('comment_rating'))['comment_rating']  # noqa: E501
-        rating_comments_posts = Comment.objects.filter(post__author__user=self.user).aaggregate(Sum('comment_rating'))['comment_rating']  # noqa: E501
+        rating_posts_author = Post.objects.filter(author_id=self.pk).aaggregate(post_rating=Sum('post_rating'))['post_rating'] * 3  # noqa: E501
+        rating_comments_author = Comment.objects.filter(user_id=self.user).aaggregate(comment_rating=Sum('comment_rating'))['comment_rating']  # noqa: E501
+        rating_comments_posts = Comment.objects.filter(post__author__user=self.user).aaggregate(comment_rating=Sum('comment_rating'))['comment_rating']  # noqa: E501
+
         self.author_rating = rating_posts_author + rating_comments_author + rating_comments_posts  # noqa: E501
         self.save()
         return self.author_rating
