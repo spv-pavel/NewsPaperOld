@@ -2,10 +2,10 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 
-TYPE_POST = [
-    ('article', 'статья'),
-    ('news', 'новость'),
-]
+# TYPE_POST = [
+#     ('article', 'статья'),
+#     ('news', 'новость'),
+# ]
 
 
 class Author(models.Model):
@@ -27,22 +27,22 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    sport = 'SP'
-    politics = 'PO'
-    education = 'ED'
-    weather = 'WE'
+    # sport = 'SP'
+    # politics = 'PO'
+    # education = 'ED'
+    # weather = 'WE'
 
-    CATEGORY_TYPES = [
-        (sport, 'Спорт'),
-        (politics, 'Политика'),
-        (education, 'Образование'),
-        (weather, 'Погода'),
-    ]
+    # CATEGORY_TYPES = [
+    #     (sport, 'Спорт'),
+    #     (politics, 'Политика'),
+    #     (education, 'Образование'),
+    #     (weather, 'Погода'),
+    # ]
 
-    category_name = models.CharField(max_length=2,
-                                     choices=CATEGORY_TYPES,
-                                     default=sport,
-                                     unique=True
+    category_name = models.CharField(max_length=25,
+                                     # choices=CATEGORY_TYPES,
+                                     # default=sport,
+                                     # unique=True
                                      )
 
 
