@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 
+
 # TYPE_POST = [
 #     ('article', 'статья'),
 #     ('news', 'новость'),
@@ -9,13 +10,13 @@ from django.db.models import Sum
 
 
 class Author(models.Model):
-    # cвязь «один к одному» с встроенной моделью пользователей User
+    # связь «один к одному» с встроенной моделью пользователей User
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # type: User
     author_rating = models.IntegerField(default=0)  # рейтинг пользователя
 
     def update_rating(self):
         # суммарный рейтинг каждой статьи автора умножается на 3
-        # суммарный рейтинг всех комментариев автора;
+        # суммарные рейтинги всех комментариев автора;
         # суммарный рейтинг всех комментариев к статьям автора
         rating_posts_author = Post.objects.filter(author_id=self.pk).aggregate(post_rating=Sum('post_rating'))['post_rating']  # noqa: E501
         rating_comments_author = Comment.objects.filter(user_id=self.user).aggregate(comment_rating=Sum('comment_rating'))['comment_rating']  # noqa: E501
@@ -45,6 +46,9 @@ class Category(models.Model):
                                      # unique=True
                                      )
 
+    def __str__(self):
+        return self.category_name.title()
+
 
 class Post(models.Model):
     article = 'ARTI'
@@ -58,7 +62,7 @@ class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     types = models.CharField(max_length=4, choices=POST_TYPE, default=news)
     data_create = models.DateField(auto_now_add=True)
-    # связь «многие ко многим» с моделью Category(с доп. моделью PostCategory)
+    # Связь «многие ко многим» с моделью Category(с доп. моделью PostCategory)
     category = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=255, blank=False)
     text = models.TextField(blank=False)
@@ -77,6 +81,10 @@ class Post(models.Model):
         # 124 символа и добавляет многоточие в конце.
         return self.text[:124] + '...'
 
+    def __str__(self):
+        return f'{self.title}: {self.text[:20]}...'
+
+
 
 class PostCategory(models.Model):
     # связь «один ко многим» с моделью Post
@@ -88,7 +96,7 @@ class PostCategory(models.Model):
 class Comment(models.Model):
     # связь «один ко многим» с моделью Post
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    # связь «один ко многим» со встр моделью User (комментарии может
+    # связь «один ко многим» со встроенной моделью User (комментарии может
     #  оставить любой пользователь, необязательно автор)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=255, blank=False)

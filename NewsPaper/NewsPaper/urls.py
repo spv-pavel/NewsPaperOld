@@ -21,5 +21,5 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
-    # path('test/', AuthorView.as_view(), name='author')
+    path('news/', include('news.urls')),
 ]

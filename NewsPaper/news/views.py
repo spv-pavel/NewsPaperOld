@@ -1,13 +1,16 @@
-# from django.shortcuts import render
+from django.views.generic import ListView, DetailView
 
-# from django.views.generic.list import ListView
-# from NewsPaper.news.models import Author, Category
-
-
-# class AuthorView(ListView):
-#     model = Author
-#     template_name = 'flatpage/test.html'
-#     context_object_name = 'author'
+from .models import Post
 
 
-# author_1 = Category.objects.create(name="Tom")
+class NewsList(ListView):
+    model = Post
+    ordering = 'data_create'
+    template_name = 'news.html'
+    context_object_name = 'news'
+
+
+class NewDetail(DetailView):
+    model = Post
+    template_name = 'new.html'
+    context_object_name = 'new'
