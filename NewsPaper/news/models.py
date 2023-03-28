@@ -85,7 +85,6 @@ class Post(models.Model):
         return f'{self.title}: {self.text[:20]}...'
 
 
-
 class PostCategory(models.Model):
     # связь «один ко многим» с моделью Post
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
