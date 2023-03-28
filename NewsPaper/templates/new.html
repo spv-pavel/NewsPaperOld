@@ -5,5 +5,16 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>{{ new }}</h1>
+    <table>
+        <tr>
+            <td>Заголовок</td>
+            <td>Дата публикации</td>
+            <td>Текст</td>
+        </tr>
+        <tr>
+            <td>{{ new.title }}</td>
+            <td>{{ new.data_create|date:'d M Y' }}</td>
+            <td>{{ new.text }}</td>
+        </tr>
+    </table>
 {% endblock content %}

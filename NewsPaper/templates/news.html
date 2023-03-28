@@ -8,5 +8,23 @@
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
 <h1>Все новости</h1>
-    {{ news }}
+    {{ news|length }}
+    {% if news %}
+        <table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата публикации</td>
+                <td>Текст</td>
+            </tr>
+            {% for new in news %}
+            <tr>
+                <td>{{ new.title }}</td>
+                <td>{{ new.data_create|date:'d M Y' }}</td>
+                <td>{{ new.text|truncatewords:20 }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Товаров нет!</h2>
+    {% endif %}
 {% endblock content %}
